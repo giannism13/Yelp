@@ -3,13 +3,13 @@
 import { useState } from "react"
 
 function Layout({ children }) {
-    const [data, setData] = useState(null);
+	const [data, setData] = useState(null);
 
-    return (
-        <div className="text-3xl font-bold underline">
-            {children}
-        </div>
-    );
+	return (
+		<div className="text-3xl font-bold underline">
+			{children}
+		</div>
+	);
 }
 
 export default Layout;

@@ -22,7 +22,7 @@ app.get("/categories", (req, res) => {
 app.get("/search/", (req, res) => {
 	var searchQ = req.query.q;
 
-	const object = knex("businesses").select("name", "business_id", "stars", "longtitude", "latitude", "review_count").
+	const object = knex("businesses").select("name", "business_id", "stars", "longitude", "latitude", "review_count").
 		whereILike("name", "%" + searchQ + "%").then((response) => {
 		res.send(response);
 	})

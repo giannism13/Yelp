@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 
-function NewSearch(props) {
+function Search(props) {
 	const [visibility, setVisibility] = useState(true);
 	const [searchContent, setSearchContent] = useState("");
 	const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
@@ -303,4 +303,4 @@ function NewSearch(props) {
 	);
 }
 
-export default NewSearch;
+export default Search;

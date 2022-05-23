@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import Layout from '../components/Layout.js';
-import NewListingItem from '../components/NewListingItem.js';
-import NewSearch from "../components/NewSearch.js";
+import ListingItem from '../components/ListingItem.js';
+import Search from "../components/Search.js";
 
 function Index() {
 	const [listingItems, setListingItems] = useState([]);
@@ -16,10 +16,10 @@ function Index() {
 
 	return (
 		<Layout>
-			<NewSearch onSearchAction={onSearchAction}></NewSearch>
+			<Search onSearchAction={onSearchAction}></Search>
 			{
 				listingItems.map((listingItem) =>
-					<NewListingItem listingItem={listingItem} />
+					<ListingItem listingItem={listingItem} />
 				)
 			}
 		</Layout>

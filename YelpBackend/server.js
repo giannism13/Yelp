@@ -15,6 +15,8 @@ app.get("/categories", (req, res) => {
 	const object = knex("businesses").select("categories").then((response) => {
 		res.send(response);
 	});
+
+	console.log("GET categories request");
 })
 
 //endpoint for a future search function
@@ -26,6 +28,7 @@ app.get("/search/", (req, res) => {
 		whereILike("name", "%" + searchQ + "%").then((response) => {
 		res.send(response);
 	})
+	console.log("GET search request. Q= " + searchQ);
 })
 
 //endpoint for when you click on a business
@@ -37,7 +40,7 @@ app.get("/business/:id", (req, res) => {
 	const object = result.then((response) => {
 		res.send(response);
 	})
-	//res.json(result);
+	console.log("GET business request. id= " + businessID);
 })
 
 app.listen(3001, () => {

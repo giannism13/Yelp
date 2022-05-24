@@ -17,11 +17,15 @@ function Index() {
 	return (
 		<Layout>
 			<Search onSearchAction={onSearchAction}></Search>
-			{
-				listingItems.map((listingItem) =>
-					<ListingItem listingItem={listingItem} />
-				)
-			}
+			<div className="flex-column place-content-center overflow-hidden">
+				{
+					listingItems.map((listingItem, idx) =>
+					(
+						<ListingItem key={`listing-item-${idx}`} listingItem={listingItem} />
+					)
+					)
+				}
+			</div>
 		</Layout>
 	);
 }

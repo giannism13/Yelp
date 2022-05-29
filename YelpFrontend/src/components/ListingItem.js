@@ -1,5 +1,6 @@
 import React, { useCallback } from "react";
 import placeholder from "../../src/placeholder.jpg"
+import star from "../../src/star.png"
 import { useNavigate } from 'react-router-dom';
 
 
@@ -18,7 +19,7 @@ function ListingItem(props) {
 					</div>
 					<div className="w-full lg:w-2/3 h-48 p-5">
 						<h1><span className="text-2xl"><b>{listingItem.name}</b></span></h1>
-						<h2>{listingItem.stars} / {listingItem.review_count}</h2>
+						<div><span class="inline"><img src={star} /> {listingItem.stars}  ({listingItem.review_count})</span></div>
 					</div>
 				</div>
 			</div>

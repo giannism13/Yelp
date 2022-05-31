@@ -19,7 +19,11 @@ function ListingItem(props) {
 					</div>
 					<div className="w-full lg:w-2/3 h-48 p-5">
 						<h1><span className="text-2xl"><b>{listingItem.name}</b></span></h1>
-						<div><span class="inline"><img src={star} /> {listingItem.stars}  ({listingItem.review_count})</span></div>
+						<div className="flex flex-row space-x-1">
+							<img src={star} alt="" />
+							<p className="pt-1 font-bold">{listingItem.stars}</p>
+							<p className="pt-1 text-gray-500">({listingItem.review_count})</p>
+						</div>
 					</div>
 				</div>
 			</div>

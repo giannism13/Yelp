@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react"
 import { useSearchParams } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 
 import placeholder from "../../src/placeholder.jpg"
 import star from "../../src/star.png"
 
 const Business = () => {
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams] = useSearchParams();
 	const [businessData, setBusinessData] = useState([]);
 
 	const businessId = searchParams.get("id");
@@ -19,37 +20,58 @@ const Business = () => {
 					console.log(data);
 				}
 			);
-	}, []);
+	}, [businessId]);
 
 	const [rotate, setRotate] = useState(false);
 
 	return (
 		<div className="2xl:container 2xl:mx-auto lg:py-16 lg:px-20 md:py-12 md:px-6 py-9 px-4 ">
-			<div className="flex justify-center items-center lg:flex-row flex-col gap-8">
+			<div className="flex justify-center lg:flex-row flex-col gap-8">
 				{/* <!-- Description Div --> */}
 
-				<div className="  w-full sm:w-96 md:w-8/12 lg:w-6/12">
+				<div className="flex flex-col  w-full sm:w-96 md:w-8/12 lg:w-6/12">
 					<h2 className="font-semibold lg:text-4xl text-3xl lg:leading-9 leading-7 text-gray-800 mt-4">{businessData.name}</h2>
-					<div className=" flex flex-row justify-between  mt-5">
-						<div className=" flex flex-row space-x-3">
-							<div><span class="inline"><img src={star} /> {businessData.stars}</span></div>
+					<h3 className="lg:text-xl lg:leading-9 leading-7 text-gray-500">{businessData.categories}</h3>
+					<div className="flex flex-row justify-between  mt-5">
+						<div className="flex flex-row space-x-3">
+							<div>
+								<img src={star} alt="" />
+							</div>
+							<div className="text-center">
+								<p className="pt-1 font-bold"> {businessData.stars} </p>
+							</div>
 						</div>
 						<p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">{businessData.review_count} reviews</p>
 					</div>
 
-					<p className=" font-normal text-base leading-6 text-gray-600 mt-7">Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. Some text. </p>
-
 					<div className="lg:mt-11 mt-10">
 
 						<hr className=" bg-gray-200 w-full my-2" />
-						<div className=" flex flex-row justify-between items-center mt-4">
-							<p className="font-medium text-base leading-4 text-gray-600">{businessData.hours.slice(1, businessData.hours.length - 1)}</p>
+						<div className=" flex flex-row justify-between items-center mt-2">
+							<p className="font-medium text-base leading-4 text-gray-600">{businessData.hours ? businessData.hours.slice(1, businessData.hours.length - 1) : "no opening hours available"}</p>
 							<svg onClick={() => setRotate(!rotate)} id="rotateSVG" className={"focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 cursor-pointer transform " + (rotate ? "rotate-180" : "rotate-0")} width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
 								<path d="M9 1L5 5L1 1" stroke="#4B5563" strokeWidth="1.25" strokeLinecap="round" strokeLinejoin="round" />
 							</svg>
 						</div>
 						<hr className=" bg-gray-200 w-full mt-4" />
-						<p className="font-medium text-base leading-3 text-black mt-4">{businessData.address}, {businessData.postal_code} {businessData.city}</p>
+						<p className="font-medium text-base leading-3 text-black mt-8">{businessData.address}, {businessData.postal_code} {businessData.city}</p>
+					</div>
+
+					<div className="h-full w-full pt-2">
+						{
+							businessData.latitude && (<MapContainer center={[businessData.latitude, businessData.longitude]} zoom={16} style={{ width: '100%', height: "500px" }}>
+								<Marker position={[businessData.latitude, businessData.longitude]}>
+									<Popup>
+										{businessData.name}
+									</Popup>
+								</Marker>
+								<TileLayer
+									attribution=''
+									url=""
+								/>
+							</MapContainer>)
+						}
+
 					</div>
 				</div>
 
@@ -122,7 +144,7 @@ const Business = () => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</div >
 	);
 }
 

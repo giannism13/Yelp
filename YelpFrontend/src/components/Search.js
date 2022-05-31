@@ -7,13 +7,11 @@ const Search = (props) => {
 	const { onSearchAction } = props;
 
 	const [searchParams, setSearchParams] = useSearchParams();
-	const [visibility, setVisibility] = useState(true);
 	const [searchContent, setSearchContent] = useState(searchParams.get(SEARCH_QUERY_PARAM) ?? "");
-	const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
 	const onFormSubmit = useCallback(() => {
 		setSearchParams({ [SEARCH_QUERY_PARAM]: searchContent })
 		onSearchAction(searchContent);
-	}, [searchContent, onSearchAction, searchParams]);
+	}, [searchContent, onSearchAction, setSearchParams]);
 
 	useEffect(() => {
 		onFormSubmit();

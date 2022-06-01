@@ -34,12 +34,8 @@ const Business = () => {
 					<h3 className="lg:text-xl lg:leading-9 leading-7 text-gray-500">{businessData.categories}</h3>
 					<div className="flex flex-row justify-between  mt-5">
 						<div className="flex flex-row space-x-3">
-							<div>
-								<img src={star} alt="" />
-							</div>
-							<div className="text-center">
-								<p className="pt-1 font-bold"> {businessData.stars} </p>
-							</div>
+							<img src={star} alt="" />
+							<p className="pt-1 font-bold"> {businessData.stars} </p>
 						</div>
 						<p className="focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-normal text-base leading-4 text-gray-700 hover:underline hover:text-gray-800 duration-100 cursor-pointer">{businessData.review_count} reviews</p>
 					</div>

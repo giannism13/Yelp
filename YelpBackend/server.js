@@ -46,6 +46,18 @@ app.get("/business/:id", (req, res) => {
 	console.log("GET business request. id= " + businessID);
 })
 
+//photos request endpoint. Returns all filenames for a specific business
+app.get("/photos/:business_id", (req, res) => {
+	var businessID = req.params.business_id;
+
+	const object = knex("photos").select("photo_id", "caption").
+		whereILike("business_id", businessID).then((response) => {
+			console.log(response);
+			res.send(response);
+		})
+	//console.log("GET photo request. Q= " + searchQ);
+})
+
 app.listen(3001, () => {
 	console.log("listening to port 3001...");
 })

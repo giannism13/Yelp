@@ -58,6 +58,18 @@ app.get("/photos/:business_id", (req, res) => {
 	//console.log("GET photo request. Q= " + searchQ);
 })
 
+//first photos request endpoint to be used as cover
+app.get("/photos1/:business_id", (req, res) => {
+	var businessID = req.params.business_id;
+
+	const object = knex("photos").select("photo_id", "caption").
+		where("business_id", businessID).first().then((response) => {
+			console.log(response);
+			res.send(response);
+		})
+	//console.log("GET photo request. Q= " + searchQ);
+})
+
 app.listen(3001, () => {
 	console.log("listening to port 3001...");
 })

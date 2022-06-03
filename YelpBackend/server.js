@@ -17,7 +17,6 @@ app.get("/categories", (req, res) => {
 	const object = knex("businesses").select("categories").then((response) => {
 		res.send(response);
 	});
-
 	console.log("GET categories request");
 })
 
@@ -46,29 +45,27 @@ app.get("/business/:id", (req, res) => {
 	console.log("GET business request. id= " + businessID);
 })
 
-//photos request endpoint. Returns all filenames for a specific business
-app.get("/photos/:business_id", (req, res) => {
+//image filename request endpoint
+app.get("/imgFilenames/:business_id", (req, res) => {
 	var businessID = req.params.business_id;
+	var number = req.query.q;
 
-	const object = knex("photos").select("photo_id", "caption").
-		whereILike("business_id", businessID).then((response) => {
-			console.log(response);
-			res.send(response);
-		})
+	if (number == 1) {
+		const object = knex("photos").select("photo_id", "caption").
+			whereILike("business_id", businessID).first().then((response) => {
+				res.send(response);
+			})
+	}
+	else {
+		const object = knex("photos").select("photo_id", "caption").
+			whereILike("business_id", businessID).then((response) => {
+				res.send(response);
+			})
+	}
 	//console.log("GET photo request. Q= " + searchQ);
 })
 
-//first photos request endpoint to be used as cover
-app.get("/photos1/:business_id", (req, res) => {
-	var businessID = req.params.business_id;
-
-	const object = knex("photos").select("photo_id", "caption").
-		where("business_id", businessID).first().then((response) => {
-			console.log(response);
-			res.send(response);
-		})
-	//console.log("GET photo request. Q= " + searchQ);
-})
+app.use('/images', express.static('images'))
 
 app.listen(3001, () => {
 	console.log("listening to port 3001...");

@@ -5,6 +5,10 @@
 /.pnp
 .pnp.js
 /.vscode
+/../images
+.jpg
+*jpg
+/../YelpBackend/images/*.jpg
 
 # testing
 /coverage

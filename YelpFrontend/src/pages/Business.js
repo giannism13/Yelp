@@ -67,7 +67,6 @@ const Business = () => {
 								/>
 							</MapContainer>)
 						}
-
 					</div>
 				</div>
 

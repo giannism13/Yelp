@@ -22,8 +22,10 @@ app.get("/search/", (req, res) => {
 
 	const object = knex("businesses").select("name", "business_id", "stars", "longitude", "latitude", "review_count").
 		whereILike("name", `%${searchQ}%`).then((response) => {
-			console.log(response);
-			res.send(response);
+			//console.log(response);
+			var numberOfResults = Object.keys(response).length;
+			//res.write('' + numberOfResults)	// we have to convert the number to a string in order to be sented
+			res.send(['' + numberOfResults, response]);
 		})
 	console.log("GET search request. Q= " + searchQ);
 })

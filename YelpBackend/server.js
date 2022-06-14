@@ -7,11 +7,6 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
-//Endpoint for the home page
-app.get("/", (req, res) => {
-	res.end("homepage.html with a search box");
-})
-
 //endpoint for a future list of categories page
 app.get("/categories", (req, res) => {
 	const object = knex("businesses").select("categories").then((response) => {
@@ -51,13 +46,13 @@ app.get("/imgFilenames/:business_id", (req, res) => {
 	var number = req.query.q;
 
 	if (number == 1) {
-		const object = knex("photos").select("photo_id", "caption").
+		const object = knex("images").select("photo_id", "caption").
 			whereILike("business_id", businessID).first().then((response) => {
 				res.send(response);
 			})
 	}
 	else {
-		const object = knex("photos").select("photo_id", "caption").
+		const object = knex("images").select("photo_id", "caption").
 			whereILike("business_id", businessID).then((response) => {
 				res.send(response);
 			})

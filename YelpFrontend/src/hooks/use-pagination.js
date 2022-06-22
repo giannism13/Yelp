@@ -3,7 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 
 export const usePagination = (data) => {
     const [page, setPage] = useState(1);
-    const [pageSize] = useState(10);
+    const [pageSize] = useState(20);
 
     const count = useMemo(() => data.length, [data]);
     const pageCount = useMemo(

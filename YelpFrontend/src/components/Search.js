@@ -18,8 +18,8 @@ const Search = (props) => {
 	}, [])
 
 	return (
-		<form className="sticky top-0 left-0 right-0 mb-6" onSubmit={(e) => { e.preventDefault(); onFormSubmit(); }}>
-			<div className="flex flex-col w-full gap-4 lg:flex-row md:flex-col p-7 justify-center bg-indigo-300 shadow-md">
+		<form className="sticky top-0 left-0 right-0" onSubmit={(e) => { e.preventDefault(); onFormSubmit(); }}>
+			<div className="flex flex-col w-full gap-4 lg:flex-row md:flex-col p-7 justify-center">
 				<div className="flex">
 					<div className="relative lg:max-w-[410px] w-full ">
 						<input id="searchInput" placeholder="Search"

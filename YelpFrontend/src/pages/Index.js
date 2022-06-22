@@ -3,6 +3,7 @@ import Layout from '../components/Layout.js';
 import ListingItem from '../components/ListingItem.js';
 import Search from "../components/Search.js";
 import { usePagination } from "../hooks/use-pagination";
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
 	const [listingItems, setListingItems] = useState([]);
@@ -24,6 +25,11 @@ const Index = () => {
 		}
 	}, [goToPage])
 
+	const navigate = useNavigate();
+	const onClick = useCallback(() => {
+		navigate(`/Statistics`);
+	}, [navigate])
+
 	return (
 		<Layout>
 
@@ -35,7 +41,7 @@ const Index = () => {
 					<Search onSearchAction={onSearchAction}></Search>
 				</div>
 				<div className="flex w-1/6 justify-end">
-					<button className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
+					<button onClick={onClick} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
 			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm">Statistics</button>
 				</div>
 			</div >

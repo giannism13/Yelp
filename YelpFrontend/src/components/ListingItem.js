@@ -3,7 +3,7 @@ import star from "../../src/star.png"
 import { useNavigate } from 'react-router-dom';
 
 
-function ListingItem(props) {
+const ListingItem = (props) => {
 	const { listingItem } = props;
 	const navigate = useNavigate();
 	const [cover, setCover] = useState([]);

@@ -22,10 +22,6 @@ app.get("/search/", (req, res) => {
 
 	const object = knex("businesses").select("name", "business_id", "stars", "longitude", "latitude", "review_count").
 		whereILike("name", `%${searchQ}%`).then((response) => {
-			//console.log(response);
-			//var numberOfResults = Object.keys(response).length;
-			//res.write('' + numberOfResults)	// we have to convert the number to a string in order to be sented
-			//res.send(['' + numberOfResults, response]);
 			res.send(response);
 		})
 	console.log("GET search request. Q= " + searchQ);
@@ -67,4 +63,72 @@ app.use('/images', express.static('images'))
 
 app.listen(3001, () => {
 	console.log("listening to port 3001...");
+})
+
+//returns all the cities for the selected state
+app.get("/get_all_states", (req, res) => {
+	const object = knex("businesses2").distinct("state").then((response) => {
+		response.forEach(element => {
+			delete element['c']
+		});
+		res.send(response);
+	})
+})
+
+
+//returns all the cities for the selected state
+app.get("/get_all_cities/:state", (req, res) => {
+	var state = req.params.state
+	const object = knex("businesses2").distinct("city").whereILike("state", state).
+		then((response) => {
+			response.forEach(element => {
+				delete element['c']
+			});
+			res.send(response);
+		})
+})
+
+//returns the number business for the selected city and state
+app.get("/get_number_of_businesses/:state/:city", (req, res) => {
+	var state = req.params.state
+	var city = req.params.city
+
+	const object = knex("businesses2").whereILike("state", state).andWhereILike("city", city).count().first().
+		then((response) => {
+			res.send(response);
+		})
+})
+
+//returns the number of businesses for the selected state
+app.get("/get_number_of_businesses/:state", (req, res) => {
+	var state = req.params.state
+
+	const object = knex("businesses2").whereILike("state", state).count().first().
+		then((response) => {
+			res.send(response);
+		})
+})
+
+
+//returns the number of businesses in the selected state that have each value of an attribute
+app.get("/statistics/:state/:attribute", (req, res) => {
+	var state = req.params.state;
+	var attribute = req.params.attribute;
+
+	const object = knex("businesses2").select(attribute).count(attribute, { as: 'count' }).
+		whereNot(attribute, "").whereILike("state", state).groupBy(attribute).then((response) => {
+			res.send(response)
+		})
+})
+
+//returns the number of businesses in the selected state and city that have each value of an attribute
+app.get("/statistics/:state/:city/:attribute", (req, res) => {
+	var state = req.params.state;
+	var city = req.params.city;
+	var attribute = req.params.attribute;
+
+	const object = knex("businesses2").select(attribute).count(attribute, { as: 'count' }).whereNot(attribute, "").
+		whereILike("state", state).andWhereILike("city", city).groupBy(attribute).then((response) => {
+			res.send(response)
+		})
 })

@@ -29,8 +29,6 @@ const LocationSelect = (props) => {
 			);
 	}, [state])
 
-
-
 	return (
 		<div>
 			<select value={state} onChange={(e) => onStateChange(e.target.value)}>

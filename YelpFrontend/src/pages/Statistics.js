@@ -1,7 +1,14 @@
 import React from "react";
+import { useState } from "react";
+import LocationSelect from "../components/LocationSelect";
 const Statistics = () => {
+
+    const [state, setState] = useState(null);
+    const [city, setCity] = useState(null);
+
+
     return (
-        <div className="flex flex-no-wrap">
+        <div className="flex flex-no-wrap h-full" style={{ height: "100vh" }}>
             {/* Sidebar starts */}
             {/* Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] */}
             <div className="w-64 absolute sm:relative bg-indigo-900 shadow md:h-full flex-col justify-between hidden sm:flex h-full">
@@ -102,7 +109,7 @@ const Statistics = () => {
                     </ul>
                 </div>
             </div>
-            <div className="text-gray-600 mr-8 visible sm:hidden relative" onclick="dropdownHandler(this)">
+            <div className="text-gray-600 mr-8 visible sm:hidden relative">
                 <ul className="p-y w-64 border-r bg-indigo-900 absolute rounded left-0 shadow mt-8 sm:mt-16 hidden">
                     <li className="flex w-full justify-between text-gray-600 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center py-3 px-2">
                         <div className="flex items-center">
@@ -187,7 +194,9 @@ const Statistics = () => {
             {/* Remove class [ h-64 ] when adding a card block */}
             <div className="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
                 {/* Remove class [ border-dashed border-2 border-gray-300 ] to remove dotted border */}
-                <div className="w-full h-full rounded border-dashed border-2 border-gray-300">{/* Place your content here */}</div>
+                <div className="w-full h-full rounded border-dashed border-2 border-gray-300">{/* Place your content here */}
+                    <LocationSelect state={state} onStateChange={setState} city={city} onCityChange={setCity} />
+                </div>
             </div>
         </div>
     );

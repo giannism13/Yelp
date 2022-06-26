@@ -68,10 +68,7 @@ app.listen(3001, () => {
 //returns all the cities for the selected state
 app.get("/get_all_states", (req, res) => {
 	const object = knex("businesses2").distinct("state").then((response) => {
-		response.forEach(element => {
-			delete element['c']
-		});
-		res.send(response);
+		res.send(response.map((result) => result.state));
 	})
 })
 
@@ -81,10 +78,7 @@ app.get("/get_all_cities/:state", (req, res) => {
 	var state = req.params.state
 	const object = knex("businesses2").distinct("city").whereILike("state", state).
 		then((response) => {
-			response.forEach(element => {
-				delete element['c']
-			});
-			res.send(response);
+			res.send(response.map((result) => result.city));
 		})
 })
 

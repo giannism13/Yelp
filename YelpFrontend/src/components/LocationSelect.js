@@ -13,7 +13,6 @@ const LocationSelect = (props) => {
 			.then(response => response.json())
 			.then(
 				data => {
-					console.log(data)
 					setStates(data);
 				}
 			);

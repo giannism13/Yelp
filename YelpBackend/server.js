@@ -103,6 +103,15 @@ app.get("/get_number_of_businesses/:state", (req, res) => {
 		})
 })
 
+//returns the number of businesses that have each value of an attribute
+app.get("/statistics/:attribute", (req, res) => {
+	var attribute = req.params.attribute;
+
+	const object = knex("businesses2").select(attribute).count(attribute, { as: 'count' }).
+		whereNot(attribute, "").groupBy(attribute).then((response) => {
+			res.send(response)
+		})
+})
 
 //returns the number of businesses in the selected state that have each value of an attribute
 app.get("/statistics/:state/:attribute", (req, res) => {

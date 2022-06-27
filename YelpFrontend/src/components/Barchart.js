@@ -10,7 +10,7 @@ import {
 } from 'chart.js';
 
 const Barchart = (props) => {
-	const { barchartData } = props
+	const { attribute, chartData } = props
 
 	ChartJS.register(
 		CategoryScale,
@@ -21,7 +21,7 @@ const Barchart = (props) => {
 		Legend
 	);
 
-	export const options = {
+	const options = {
 		responsive: true,
 		plugins: {
 			legend: {
@@ -29,25 +29,22 @@ const Barchart = (props) => {
 			},
 			title: {
 				display: true,
-				text: 'Chart.js Bar Chart',
+				text: attribute,
 			},
 		},
 	};
 
-	const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+	console.log("chart data: " + chartData.count)
+	const labels = chartData ? chartData.map((element) => element[attribute]) : [];
 
-	export const data = {
+
+	const data = {
 		labels,
 		datasets: [
 			{
-				label: 'Dataset 1',
-				data: labels.map(() => /* */),
+				label: '',
+				data: chartData.map((element) => element.count),
 				backgroundColor: 'rgba(255, 99, 132, 0.5)',
-			},
-			{
-				label: 'Dataset 2',
-				data: labels.map(() => faker.datatype.number({ min: 0, max: 1000 })),
-				backgroundColor: 'rgba(53, 162, 235, 0.5)',
 			},
 		],
 	};

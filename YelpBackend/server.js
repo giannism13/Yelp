@@ -12,7 +12,6 @@ app.get("/categories", (req, res) => {
 	const object = knex("businesses").select("categories").then((response) => {
 		res.send(response);
 	});
-	console.log("GET categories request");
 })
 
 //endpoint for a future search function
@@ -24,7 +23,6 @@ app.get("/search/", (req, res) => {
 		whereILike("name", `%${searchQ}%`).then((response) => {
 			res.send(response);
 		})
-	console.log("GET search request. Q= " + searchQ);
 })
 
 //endpoint for when you click on a business
@@ -33,10 +31,8 @@ app.get("/business/:id", (req, res) => {
 	var businessID = req.params.id;
 	let result = knex("businesses").where("business_id", businessID).first()
 	result.then((response) => {
-		console.log(response);
 		res.send(response);
 	})
-	console.log("GET business request. id= " + businessID);
 })
 
 //image filename request endpoint
@@ -56,7 +52,6 @@ app.get("/imgFilenames/:business_id", (req, res) => {
 				res.send(response);
 			})
 	}
-	//console.log("GET photo request. Q= " + searchQ);
 })
 
 app.use('/images', express.static('images'))
@@ -65,7 +60,7 @@ app.listen(3001, () => {
 	console.log("listening to port 3001...");
 })
 
-//returns all the cities for the selected state
+//returns all states
 app.get("/get_all_states", (req, res) => {
 	const object = knex("businesses2").distinct("state").then((response) => {
 		res.send(response.map((result) => result.state));
@@ -73,7 +68,7 @@ app.get("/get_all_states", (req, res) => {
 })
 
 
-//returns all the cities for the selected state
+//returns all cities for the selected state
 app.get("/get_all_cities/:state", (req, res) => {
 	var state = req.params.state
 	const object = knex("businesses2").distinct("city").whereILike("state", state).
@@ -133,5 +128,26 @@ app.get("/statistics/:state/:city/:attribute", (req, res) => {
 	const object = knex("businesses2").select(attribute).count(attribute, { as: 'count' }).whereNot(attribute, "").
 		whereILike("state", state).andWhereILike("city", city).groupBy(attribute).then((response) => {
 			res.send(response)
+		})
+})
+
+//returns the coordinates of all the businesses that have this attribute
+app.get("/heatmap/:attribute/:attributeValue", (req, res) => {
+	var attribute = req.params.attribute;
+	var attributeValue = req.params.attributeValue;
+
+	const object = knex("businesses2").select("latitude", "longitude").where(attribute, attributeValue).
+		then((response) => {
+			res.send(response)
+		})
+})
+
+//returns all the possible values for the selected attribute
+app.get("/get-all-values/:attribute", (req, res) => {
+	var attribute = req.params.attribute;
+
+	const object = knex("businesses2").distinct(attribute).whereNot(attribute, "").
+		then((response) => {
+			res.send(response.map((result) => result[attribute]));
 		})
 })

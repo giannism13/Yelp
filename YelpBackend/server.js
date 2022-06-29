@@ -1,4 +1,4 @@
-const { response } = require("express");
+const { response, query } = require("express");
 const express = require("express");
 const res = require("express/lib/response");
 const app = express();
@@ -39,11 +39,13 @@ app.get("/business/:id", (req, res) => {
 app.get("/imgFilenames/:business_id", (req, res) => {
 	var businessID = req.params.business_id;
 	var number = req.query.q;
+	//console.log(req.params, req.query);
 
 	if (number == 1) {
 		const object = knex("images").select("photo_id", "caption").
 			whereILike("business_id", businessID).first().then((response) => {
-				res.send(response);
+				//console.log(response);
+				res.send(response ?? {});
 			})
 	}
 	else {
@@ -150,4 +152,31 @@ app.get("/get-all-values/:attribute", (req, res) => {
 		then((response) => {
 			res.send(response.map((result) => result[attribute]));
 		})
+})
+
+//makes a search query with the set city, state, attribute and attribute value
+app.get("/searchExt/", (req, res) => {
+	var state = req.query.state;
+	var city = req.query.city;
+	var attribute = req.query.attribute;
+	var attributeValue = req.query.attributeValue;
+
+	if (state === "None") {
+		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count")
+			.where(attribute, attributeValue).then((response) => {
+				res.send(response)
+			})
+	}
+	else if (city === "None") {
+		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count")
+			.where(attribute, attributeValue).andWhereILike("state", state).then((response) => {
+				res.send(response)
+			})
+	}
+	else {
+		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count")
+			.where(attribute, attributeValue).andWhereILike("state", state).andWhereILike("city", city).then((response) => {
+				res.send(response)
+			})
+	}
 })

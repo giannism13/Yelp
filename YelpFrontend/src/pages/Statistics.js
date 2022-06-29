@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import LocationSelect from "../components/LocationSelect";
 import AttributeSelect from "../components/AttributeSelect";
 //import AttributeValueSelect from "../components/AttributeValueSelect";
@@ -8,17 +8,19 @@ import Barchart from "../components/Barchart";
 import Piechart from "../components/Piechart";
 //import HeatMap from "../components/HeatMap";
 
+import { useNavigate } from 'react-router-dom';
+
 
 const Statistics = () => {
 
-	const [state, setState] = useState(null);
-	const [city, setCity] = useState(null);
+	const [state, setState] = useState("None");
+	const [city, setCity] = useState("None");
 	const [attribute, setAttribute] = useState("Alcohol");
 	//const [attributeValue, setAttributeValue] = useState(null);
 	const [chartData, setChartData] = useState([]);
 	//const [heatCoordinates, setHeatCoordinates] = useState([]);
 
-	const [barVisibility, setBarVisibility] = useState(false);
+	const [barVisibility, setBarVisibility] = useState(true);
 	const [pieVisibility, setPieVisibility] = useState(false);
 	//const [heatVisibility, setHeatVisibility] = useState(false);
 
@@ -48,9 +50,29 @@ const Statistics = () => {
 	// 		);
 	// }
 
+	const [valueClicked, setValueClicked] = useState([])
+
+	const navigate = useNavigate();
+
+	// const firstUpdate = useRef(true);
+
+	// useEffect(() => {
+	// 	console.log(firstUpdate)
+	// 	if (!firstUpdate.current) {
+	// 		fetch(`${API_URL}/searchExt/?state=${state}&city=${city}&attribute=${attribute}&attributeValue=${valueClicked}`)
+	// 			.then(response => response.json())
+	// 			.then(data => {
+	// 				navigate(`/`, { listingItems: data });
+	// 			})
+
+	// 		console.log('i fire once');
+	// 	}
+	// 	firstUpdate.current = false;
+	// }, [valueClicked])
+
+
 	useEffect(() => {
 		if (attribute !== []) {
-			console.log(attribute)
 			if (state == null || state === "None") {
 				fetch(`${API_URL}/statistics/${attribute}`)
 					.then(response => response.json())
@@ -78,7 +100,6 @@ const Statistics = () => {
 						}
 					);
 			}
-			console.log("Chartdata: " + chartData)
 		}
 	}, [state, city, attribute])
 
@@ -86,11 +107,10 @@ const Statistics = () => {
 		<div className="flex flex-no-wrap h-full" style={{ height: "100vh" }}>
 			{/* Sidebar starts */}
 			{/* Remove class [ hidden ] and replace [ sm:flex ] with [ flex ] */}
-			<div className="w-64 absolute sm:relative bg-indigo-900 shadow md:h-full flex-col justify-between hidden sm:flex h-full">
+			<div className="w-64 absolute sm:relative bg-indigo-900 shadow md:h-full flex-col justify-between flex h-full">
 				<div>
 					<div className="h-16 w-full flex items-center px-8 text-6xl text-gray-100 justify-center">
 						Statistics
-						{/*============================ ΤΙΤΛΟΣ ========================*/}
 					</div>
 					<ul className="mt-12">
 						<li className="flex w-full justify-between text-gray-400 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center py-3 px-8"
@@ -132,13 +152,13 @@ const Statistics = () => {
 				</div>
 				{barVisibility ?
 					<div className="w-full h-full rounded flex-none">
-						<Barchart attribute={attribute} chartData={chartData} />
+						<Barchart attribute={attribute} chartData={chartData} onValueClick={setValueClicked} state={state} city={city} />
 					</div>
 					: null}
 
 				{pieVisibility ?
 					<div className="w-1/2 h-1/2 rounded flex-none m-auto">
-						<Piechart attribute={attribute} chartData={chartData} />
+						<Piechart attribute={attribute} chartData={chartData} onValueClick={setValueClicked} state={state} city={city} />
 					</div>
 					: null}
 

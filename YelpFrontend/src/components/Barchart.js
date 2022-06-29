@@ -1,4 +1,5 @@
-import { Bar } from 'react-chartjs-2'
+import { Bar, getElementAtEvent } from 'react-chartjs-2'
+import React, { useRef } from 'react';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -9,8 +10,25 @@ import {
 	Legend,
 } from 'chart.js';
 
+import { useNavigate, createSearchParams } from 'react-router-dom';
+
 const Barchart = (props) => {
-	const { attribute, chartData } = props
+	const { attribute, chartData, onValueClick, state, city } = props
+
+	const chartRef = useRef();
+
+	const navigate = useNavigate();
+
+	const onClick = (event) => {
+		var valueIndexClicked = getElementAtEvent(chartRef.current, event)[0].index;
+
+		onValueClick(labels[valueIndexClicked]);
+		var valueClicked = labels[valueIndexClicked];
+		console.log(props)
+		navigate({ pathname: '/', search: createSearchParams({ state, city, attribute, attributeValue: valueClicked }).toString() });
+
+	}
+
 
 	ChartJS.register(
 		CategoryScale,
@@ -34,9 +52,7 @@ const Barchart = (props) => {
 		},
 	};
 
-	console.log("chart data: " + chartData.count)
 	const labels = chartData ? chartData.map((element) => element[attribute]) : [];
-
 
 	const data = {
 		labels,
@@ -49,7 +65,7 @@ const Barchart = (props) => {
 		],
 	};
 
-	return <Bar options={options} data={data} />;
+	return <Bar options={options} data={data} ref={chartRef} onClick={onClick} />;
 }
 
 export default Barchart

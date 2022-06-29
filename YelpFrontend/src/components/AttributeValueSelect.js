@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { API_URL } from "../constants/constants";
 
+/*Unused component. It creates a dropdown menu with all the possible values the passed attribute can have.
+Made to be used for heamap creation, but due to difficulties in implementation the later was scrapped. */
+
 const AttributeValueSelect = (props) => {
 	const { attribute, attributeValue, onAttributeValueChange } = props
 	const [attributeValues, setAttributeValues] = useState([])

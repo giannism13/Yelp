@@ -1,11 +1,13 @@
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import Layout from '../components/Layout.js';
 import ListingItem from '../components/ListingItem.js';
 import Search from "../components/Search.js";
 import { usePagination } from "../hooks/use-pagination";
-import { useNavigate } from 'react-router-dom';
+import { useQuery } from "../hooks/use-query";
+import { useNavigate, useLocation } from 'react-router-dom';
+import { API_URL } from "../constants/constants";
 
-const Index = () => {
+const Index = (props) => {
 	const [listingItems, setListingItems] = useState([]);
 	const { page,
 		pageSize,
@@ -29,6 +31,23 @@ const Index = () => {
 	const onClick = useCallback(() => {
 		navigate(`/Statistics`);
 	}, [navigate])
+
+	// const dataFromChart = useLocation();
+	// console.log(dataFromChart)
+	// useEffect(() => {
+	// 	setListingItems(dataFromChart)
+	// })
+
+	const query = useQuery();
+	useEffect(() => {
+		if (query.get('attribute')) {
+			fetch(`${API_URL}/searchExt/?state=${query.get('state')}&city=${query.get('city')}&attribute=${query.get('attribute')}&attributeValue=${query.get('attributeValue')}`)
+				.then(response => response.json())
+				.then(data => {
+					setListingItems(data);
+				})
+		}
+	}, [])
 
 	return (
 		<Layout>

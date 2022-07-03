@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import LocationSelect from "../components/LocationSelect";
 import AttributeSelect from "../components/AttributeSelect";
 //import AttributeValueSelect from "../components/AttributeValueSelect";
@@ -8,21 +7,17 @@ import Barchart from "../components/Barchart";
 import Piechart from "../components/Piechart";
 //import HeatMap from "../components/HeatMap";
 
-import { useNavigate } from 'react-router-dom';
-
 
 const Statistics = () => {
 
 	const [state, setState] = useState("None");
 	const [city, setCity] = useState("None");
 	const [attribute, setAttribute] = useState("Alcohol");
-	//const [attributeValue, setAttributeValue] = useState(null);
 	const [chartData, setChartData] = useState([]);
-	//const [heatCoordinates, setHeatCoordinates] = useState([]);
 
 	const [barVisibility, setBarVisibility] = useState(true);
 	const [pieVisibility, setPieVisibility] = useState(false);
-	//const [heatVisibility, setHeatVisibility] = useState(false);
+
 
 	const onPieClick = () => {
 		setBarVisibility(false);
@@ -35,6 +30,10 @@ const Statistics = () => {
 		setPieVisibility(false);
 		//setHeatVisibility(false);
 	}
+
+	//const [attributeValue, setAttributeValue] = useState(null);
+	//const [heatCoordinates, setHeatCoordinates] = useState([]);
+	//const [heatVisibility, setHeatVisibility] = useState(false);
 
 	// const onHeatClick = () => {
 	// 	setBarVisibility(false);
@@ -49,27 +48,6 @@ const Statistics = () => {
 	// 			}
 	// 		);
 	// }
-
-	const [valueClicked, setValueClicked] = useState([])
-
-	const navigate = useNavigate();
-
-	// const firstUpdate = useRef(true);
-
-	// useEffect(() => {
-	// 	console.log(firstUpdate)
-	// 	if (!firstUpdate.current) {
-	// 		fetch(`${API_URL}/searchExt/?state=${state}&city=${city}&attribute=${attribute}&attributeValue=${valueClicked}`)
-	// 			.then(response => response.json())
-	// 			.then(data => {
-	// 				navigate(`/`, { listingItems: data });
-	// 			})
-
-	// 		console.log('i fire once');
-	// 	}
-	// 	firstUpdate.current = false;
-	// }, [valueClicked])
-
 
 	useEffect(() => {
 		if (attribute !== []) {
@@ -152,13 +130,13 @@ const Statistics = () => {
 				</div>
 				{barVisibility ?
 					<div className="w-full h-full rounded flex-none">
-						<Barchart attribute={attribute} chartData={chartData} onValueClick={setValueClicked} state={state} city={city} />
+						<Barchart attribute={attribute} chartData={chartData} state={state} city={city} />
 					</div>
 					: null}
 
 				{pieVisibility ?
 					<div className="w-1/2 h-1/2 rounded flex-none m-auto">
-						<Piechart attribute={attribute} chartData={chartData} onValueClick={setValueClicked} state={state} city={city} />
+						<Piechart attribute={attribute} chartData={chartData} state={state} city={city} />
 					</div>
 					: null}
 

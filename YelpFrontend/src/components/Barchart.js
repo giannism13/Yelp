@@ -13,7 +13,7 @@ import {
 import { useNavigate, createSearchParams } from 'react-router-dom';
 
 const Barchart = (props) => {
-	const { attribute, chartData, onValueClick, state, city } = props
+	const { attribute, chartData, state, city } = props
 
 	const chartRef = useRef();
 
@@ -22,7 +22,6 @@ const Barchart = (props) => {
 	const onClick = (event) => {
 		var valueIndexClicked = getElementAtEvent(chartRef.current, event)[0].index;
 
-		onValueClick(labels[valueIndexClicked]);
 		var valueClicked = labels[valueIndexClicked];
 		console.log(props)
 		navigate({ pathname: '/', search: createSearchParams({ state, city, attribute, attributeValue: valueClicked }).toString() });

@@ -4,7 +4,7 @@ import ListingItem from '../components/ListingItem.js';
 import Search from "../components/Search.js";
 import { usePagination } from "../hooks/use-pagination";
 import { useQuery } from "../hooks/use-query";
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from "../constants/constants";
 
 const Index = (props) => {
@@ -32,12 +32,6 @@ const Index = (props) => {
 		navigate(`/Statistics`);
 	}, [navigate])
 
-	// const dataFromChart = useLocation();
-	// console.log(dataFromChart)
-	// useEffect(() => {
-	// 	setListingItems(dataFromChart)
-	// })
-
 	const query = useQuery();
 	useEffect(() => {
 		if (query.get('attribute')) {
@@ -52,26 +46,27 @@ const Index = (props) => {
 	return (
 		<Layout>
 
-			<div className="flex justify-center items-center w-full gap-4 lg:flex-row md:flex-col bg-indigo-300 shadow-md">
-				<div className="flex w-1/6 items-center">
-
-				</div>
+			<div className="flex justify-center items-center w-full gap-4 lg:flex-row md:flex-col bg-indigo-300 shadow-md fixed">
+				<div className="flex w-1/6 items-center" />
 				<div className="flex-auto w-2/3">
-					<Search onSearchAction={onSearchAction}></Search>
+					<Search onSearchAction={onSearchAction} />
 				</div>
 				<div className="flex w-1/6 justify-end">
 					<button onClick={onClick} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
 			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm">Statistics</button>
 				</div>
 			</div >
-			<div className="flex-column place-content-center overflow-hidden">
-				{
-					pageData.map((listingItem, idx) =>
-					(
-						<ListingItem key={`listing-item-${listingItem.name}-${idx}`} listingItem={listingItem} />
-					)
-					)
-				}
+			<div>
+				<div className="h-36" />
+				<div className="flex-column place-content-center overflow-hidden">
+					{
+						pageData.map((listingItem, idx) =>
+						(
+							<ListingItem key={`listing-item-${listingItem.name}-${idx}`} listingItem={listingItem} />
+						)
+						)
+					}
+				</div>
 			</div>
 			{pageCount > 1 && (<div className="flex justify-center items-center w-full place-content-center overflow-hidden">
 				<button onClick={() => goToPage(page - 1)} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600

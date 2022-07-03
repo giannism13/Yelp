@@ -19,7 +19,7 @@ app.get("/categories", (req, res) => {
 app.get("/search/", (req, res) => {
 	var searchQ = req.query.q;
 
-	const object = knex("businesses").select("name", "business_id", "stars", "longitude", "latitude", "review_count").
+	const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories").
 		whereILike("name", `%${searchQ}%`).then((response) => {
 			res.send(response);
 		})
@@ -29,7 +29,7 @@ app.get("/search/", (req, res) => {
 //request should be at /business/some_business_id
 app.get("/business/:id", (req, res) => {
 	var businessID = req.params.id;
-	let result = knex("businesses").where("business_id", businessID).first()
+	let result = knex("businesses2").where("business_id", businessID).first()
 	result.then((response) => {
 		res.send(response);
 	})
@@ -44,8 +44,7 @@ app.get("/imgFilenames/:business_id", (req, res) => {
 	if (number == 1) {
 		const object = knex("images").select("photo_id", "caption").
 			whereILike("business_id", businessID).first().then((response) => {
-				//console.log(response);
-				res.send(response ?? {});
+				res.send(response);
 			})
 	}
 	else {
@@ -64,7 +63,7 @@ app.listen(3001, () => {
 
 //returns all states
 app.get("/get_all_states", (req, res) => {
-	const object = knex("businesses2").distinct("state").then((response) => {
+	const object = knex("businesses2").distinct("state").orderBy("state", "asc").then((response) => {
 		res.send(response.map((result) => result.state));
 	})
 })
@@ -73,7 +72,7 @@ app.get("/get_all_states", (req, res) => {
 //returns all cities for the selected state
 app.get("/get_all_cities/:state", (req, res) => {
 	var state = req.params.state
-	const object = knex("businesses2").distinct("city").whereILike("state", state).
+	const object = knex("businesses2").distinct("city").whereILike("state", state).orderBy("city", "asc").
 		then((response) => {
 			res.send(response.map((result) => result.city));
 		})

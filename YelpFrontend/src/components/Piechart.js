@@ -4,7 +4,7 @@ import { Pie, getElementAtEvent } from 'react-chartjs-2';
 import { useNavigate, createSearchParams } from 'react-router-dom';
 
 const Piechart = (props) => {
-	const { attribute, chartData, onValueClick, state, city } = props
+	const { attribute, chartData, state, city } = props
 
 	const chartRef = useRef();
 
@@ -13,7 +13,6 @@ const Piechart = (props) => {
 	const onClick = (event) => {
 		var valueIndexClicked = getElementAtEvent(chartRef.current, event)[0].index;
 
-		onValueClick(labels[valueIndexClicked]);
 		var valueClicked = labels[valueIndexClicked];
 		console.log(props)
 		navigate({ pathname: '/', search: createSearchParams({ state, city, attribute, attributeValue: valueClicked }).toString() });

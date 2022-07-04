@@ -10,18 +10,22 @@ app.use(cors());
 //endpoint for a future list of categories page
 
 app.get("/businesses", async (req, res) => {
-  const { businessName, city, max = 100, state } = req.query;
-  console.log({ businessName, city, state, max });
+  const { businessName, city, max = 1000, state, isOpen } = req.query;
+  console.log({ businessName, city, state, max, isOpen });
 
   const maximum = Number.parseInt(max) || 100;
   res.json(
     await knex("businesses2")
       .select("*")
       .where((builder) => {
-        if (businessName && businessName.length > 0)
-          builder.where("name", businessName);
-        if (city && city.length > 0) builder.where("city", city);
-        if (state && state.length > 0) builder.where("state", state);
+        if (businessName && businessName.length > 0) {
+          builder.whereILike("name", `%${businessName}%`);
+        }
+        if (city && city.length > 0) builder.whereILike("city", `%${city}%`);
+        if (state && state.length > 0)
+          builder.whereILike("state", `%${state}%`);
+        if (isOpen && isOpen !== "all")
+          builder.whereILike("is_open", `%${Number.parseInt(isOpen)}%`);
       })
       .limit(maximum)
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 const FilterCheckbox = (props) => {
     const { value } = props;

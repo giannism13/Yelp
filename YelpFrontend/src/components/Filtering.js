@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import FilterSelector from "./FilterSelector";
 
 const Filtering = (props) => {
@@ -55,14 +55,12 @@ const Filtering = (props) => {
 	]
 
 	return (
-		<div className="2xl:container 2xl:mx-auto" >
-			<div id="filterSection" className={"relative md:py-10 lg:px-20 md:px-6 py-9 px-4 bg-gray-50 w-full " + (showFilters ? "block" : "hidden")} >
-				{filters.map((filter, idx) => (
-					<FilterSelector key={`${filter}-filter-${idx}`} filterName={filter} />
-				))}
-				<div className="px-0 mt-10 w-full md:w-auto md:mt-0 md:absolute md:right-0 md:bottom-0 md:py-10 lg:px-20 md:px-6" >
-					<button onClick={applyFilters} className="w-full hover:bg-gray-700 focus:ring focus:ring-offset-2 focus:ring-gray-800 text-base leading-4 font-medium py-4 px-10 text-white bg-gray-800" >Apply Filter </button>
-				</div>
+		<div id="filterSection" className={"relative flex flex-col overflow-y-scroll md:py-10 lg:px-10 md:px-3 py-9 px-4 bg-gray-50 w-full " + (showFilters ? "block" : "hidden")} style={{ height: 'calc(100vh - 6rem)' }} >
+			{filters.map((filter, idx) => (
+				<FilterSelector key={`${filter}-filter-${idx}`} filterName={filter} />
+			))}
+			<div className="px-0 mt-10 w-full md:w-auto md:mt-0 md:right-0 md:bottom-0 md:py-10 lg:px-20 md:px-6" >
+				<button onClick={applyFilters} className="w-full hover:bg-gray-700 focus:ring focus:ring-offset-2 focus:ring-gray-800 text-base leading-4 font-medium py-4 px-10 text-white bg-gray-800" >Apply Filter </button>
 			</div>
 		</div>
 	);

@@ -50,8 +50,7 @@ const Index = (props) => {
 
 	return (
 		<Layout>
-
-			<div className="flex justify-center items-center w-full gap-4 lg:flex-row md:flex-col bg-indigo-300 shadow-md fixed">
+			<div className="flex justify-center items-center w-full gap-4 lg:flex-row md:flex-col bg-indigo-300 shadow-md fixed z-50">
 				<div className="flex w-1/6 items-center">
 					<button onClick={() => setShowfilters(!showFilters)} className=" cursor-pointer sm:flex hover:bg-gray-700 focus:ring focus:ring-offset-2 focus:ring-gray-800 py-4 px-6 bg-gray-800 flex text-base leading-4 font-normal text-white justify-center items-center ">
 						<svg className=" mr-2" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,30 +74,25 @@ const Index = (props) => {
 					<button onClick={onClick} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm ">Statistics</button>
 				</div>
 			</div>
-			<div className="lg:flex-col md:flex-col">
-				<div>
-					<div className="h-36" />
-					<div>
-						<Filtering showFilters={showFilters} />
-					</div>
-					<div className="flex-column place-content-center overflow-hidden"> {
-						pageData.map((listingItem, idx) =>
-						(
-							<ListingItem key={`listing-item-${listingItem.name}-${idx}`} listingItem={listingItem} />
-						))}
-					</div>
+			<div className="flex flex-row pt-24">
+				<div className={`sticky h-full self-start top-24 ${showFilters ? 'w-1/4' : 'hidden'}`}>
+					<Filtering showFilters={showFilters} />
 				</div>
-				{pageCount > 1 && (<div className="flex justify-center items-center w-full place-content-center overflow-hidden">
-					<button onClick={() => goToPage(page - 1)} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
+				<div className={`flex flex-col place-content-center overflow-hidden ${showFilters ? 'w-3/4' : 'w-full'}`}> {
+					pageData.map((listingItem, idx) => (
+						<ListingItem key={`listing-item-${listingItem.name}-${idx}`} listingItem={listingItem} />
+					))}
+					{pageCount > 1 && (<div className="flex justify-center items-center w-full place-content-center overflow-hidden">
+						<button onClick={() => goToPage(page - 1)} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
 			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm">Previous</button>
 
-					{page}/{pageCount}
-					<button onClick={() => goToPage(page + 1)} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
+						{page}/{pageCount}
+						<button onClick={() => goToPage(page + 1)} className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
 			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm">Next</button>
 
-				</div>)}
+					</div>)}
+				</div>
 			</div>
-
 		</Layout>
 	);
 }

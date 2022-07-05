@@ -22,15 +22,14 @@ const FilterSelector = (props) => {
 			<div className=" flex space-x-2" >
 				<p className=" lg:text-2xl text-xl lg:leading-6 leading-5 font-medium text-gray-800">{filterName}</p>
 			</div>
-			<div className=" md:flex md:space-x-6 mt-8 grid grid-cols-3 gap-y-8 flex-wrap" >
-				<div className=" flex space-x-2 md:justify-center md:items-center items-center justify-start">
-					{
-						filterValues.map((value, idx) => (
-							<FilterCheckbox key={`${value}-checkbox-${idx}`} value={value} />
-						))}
+			<div className=" md:flex md:space-x-6 mt-4 grid grid-cols-3 gap-y-4 flex-wrap" >
+				<div className=" flex flex-wrap justify-start w-full">
+					{filterValues.map((value, idx) => (
+						<FilterCheckbox key={`${value}-checkbox-${idx}`} value={value} name={filterName} />
+					))}
 				</div>
 			</div>
-			<hr className=" bg-gray-200 lg:w-6/12 w-full md:my-10 my-8" />
+			<hr className=" bg-gray-200 lg:w-6/12 w-full md:my-8 my-4" />
 		</div>
 	)
 };

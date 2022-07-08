@@ -5,16 +5,17 @@ import Business from './pages/Business';
 import Statistics from './pages/Statistics';
 import { Routes, Route } from 'react-router-dom';
 import { FilterContextProvider, useFilterContext } from "./hooks/use-filters";
+import Map from "./components/Map";
 
 function App() {
 	return (
 		<>
-
 			<FilterContextProvider>
 				<Routes>
 					<Route path="/" element={<Index />} />
 					<Route path="business" element={<Business />} />
 					<Route path="statistics" element={<Statistics />} />
+					<Route path="mapview" element={<Map />} />
 				</Routes>
 			</FilterContextProvider>
 		</>

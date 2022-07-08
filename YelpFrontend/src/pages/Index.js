@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react"
+import { useState, useCallback, useEffect, useMemo } from "react"
 import Layout from '../components/Layout.js';
 import ListingItem from '../components/ListingItem.js';
 import Search from "../components/Search.js";
@@ -7,9 +7,23 @@ import { useQuery } from "../hooks/use-query";
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from "../constants/constants";
 import Filtering from "../components/Filtering.js";
+import { useFilterContext } from "../hooks/use-filters";
 
-const Index = (props) => {
+const Index = () => {
 	const [listingItems, setListingItems] = useState([]);
+
+	const { filterValues } = useFilterContext();
+
+	const filteredListingItems = useMemo(() => {
+		return listingItems.filter((item) => {
+			if (filterValues)
+				for (const property of Object.keys(filterValues))
+					return filterValues[property][item[property]] === true;
+
+			return true;
+		})
+	}, [listingItems, filterValues])
+
 	const {
 		page,
 		pageSize,
@@ -17,7 +31,7 @@ const Index = (props) => {
 		pageData,
 		goToPage,
 		pageCount
-	} = usePagination(listingItems);
+	} = usePagination(filteredListingItems);
 
 	const onSearchAction = useCallback((searchQuery) => {
 		if (searchQuery.length >= 3) {
@@ -93,7 +107,7 @@ const Index = (props) => {
 					</div>)}
 				</div>
 			</div>
-		</Layout>
+		</Layout >
 	);
 }
 

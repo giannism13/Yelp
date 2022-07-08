@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import FilterCheckbox from "./FilterCheckbox";
-import { API_URL } from "../constants/constants";
+import { useFilterContext } from "../hooks/use-filters";
 
 const FilterSelector = (props) => {
-	const { filterName } = props;
-
-	const [filterValues, setFilterValues] = useState([]);
-
-	useEffect(() => {
-		fetch(`${API_URL}/get-all-values/${filterName}`)
-			.then(response => response.json())
-			.then(
-				data => {
-					setFilterValues(data);
-				}
-			);
-	}, []);
+	const { category } = props;
+	const { filterValues, setFilterValue } = useFilterContext();
+	const filters = Object.keys(filterValues[category]);
 
 	return (
 		<div >
 			<div className=" flex space-x-2" >
-				<p className=" lg:text-2xl text-xl lg:leading-6 leading-5 font-medium text-gray-800">{filterName}</p>
+				<p className=" lg:text-2xl text-xl lg:leading-6 leading-5 font-medium text-gray-800">{category}</p>
 			</div>
 			<div className=" md:flex md:space-x-6 mt-4 grid grid-cols-3 gap-y-4 flex-wrap" >
 				<div className=" flex flex-wrap justify-start w-full">
-					{filterValues.map((value, idx) => (
-						<FilterCheckbox key={`${value}-checkbox-${idx}`} value={value} name={filterName} />
+					{filters.map((filter, idx) => (
+						<FilterCheckbox key={`${filter}-checkbox-${idx}`} onChange={(e) => { setFilterValue(category, filter, !!!filterValues[category][filter]) }} label={filter} />
 					))}
 				</div>
 			</div>

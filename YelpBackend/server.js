@@ -43,7 +43,13 @@ app.get("/search", (req, res) => {
 	console.log(req.query);
 	var searchQ = req.query.q;
 	const object = knex("businesses2")
-		.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories").whereILike("name", `%${searchQ}%`)
+		.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+			"BikeParking",
+			"NoiseLevel",
+			"RestaurantsAttire",
+			"RestaurantsPriceRange",
+			"Smoking",
+			"WiFi").whereILike("name", `%${searchQ}%`)
 		.then((response) => {
 			res.send(response);
 		});

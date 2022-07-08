@@ -7,6 +7,7 @@ import { useQuery } from "../hooks/use-query";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../constants/constants";
 import Filtering from "../components/Filtering.js";
+import Map from "../components/Map.js";
 
 const Index = (props) => {
   const [listingItems, setListingItems] = useState([]);
@@ -33,6 +34,7 @@ const Index = (props) => {
   }, [navigate]);
 
   const query = useQuery();
+
   useEffect(() => {
     if (query.get("attribute")) {
       fetch(
@@ -154,6 +156,7 @@ const Index = (props) => {
           </button>
         </div>
       </div>
+
       <div className="flex flex-row pt-24">
         <div
           className={`sticky h-full self-start top-24 ${
@@ -162,12 +165,20 @@ const Index = (props) => {
         >
           <Filtering showFilters={showFilters} />
         </div>
+
         <div
           className={`flex flex-col place-content-center overflow-hidden ${
             showFilters ? "w-3/4" : "w-full"
           }`}
         >
           {" "}
+          <div className="flex justify-center h-96">
+            <div className="flex justify-center cursor-pointer m-5 rounded-lg bg-white shadow-xl overflow-hidden w-full max-w-6xl">
+              <div className="flex flex-col lg:flex-row w-full items-start lg:items-center rounded">
+                <Map data={pageData}></Map>
+              </div>
+            </div>
+          </div>
           {pageData.map((listingItem, idx) => (
             <ListingItem
               key={`listing-item-${listingItem.name}-${idx}`}
@@ -180,6 +191,7 @@ const Index = (props) => {
                 onClick={() => goToPage(page - 1)}
                 className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
 			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm"
+                s
               >
                 Previous
               </button>

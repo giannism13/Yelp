@@ -1,4 +1,3 @@
-import ImageGallery from 'react-image-gallery';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 

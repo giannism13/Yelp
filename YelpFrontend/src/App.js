@@ -4,7 +4,7 @@ import Index from './pages/Index.js';
 import Business from './pages/Business';
 import Statistics from './pages/Statistics';
 import { Routes, Route } from 'react-router-dom';
-import { FilterContextProvider, useFilterContext } from "./hooks/use-filters";
+import { FilterContextProvider } from "./hooks/use-filters";
 import Map from "./components/Map";
 
 function App() {

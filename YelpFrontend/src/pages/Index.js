@@ -124,7 +124,7 @@ const Index = () => {
 					<div className="flex justify-center h-96">
 						<div className="flex justify-center cursor-pointer m-5 rounded-lg bg-white shadow-xl overflow-hidden w-full max-w-6xl">
 							<div className="flex flex-col lg:flex-row w-full items-start lg:items-center rounded">
-								<Map data={pageData} zoom={5}></Map>
+								<Map data={pageData} zoom={4}></Map>
 							</div>
 						</div>
 					</div>

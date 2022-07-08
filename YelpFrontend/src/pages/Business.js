@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import ImagesHolder from "../components/ImagesHolder";
 import { API_URL } from "../constants/constants";
 import Map from "../components/Map";
@@ -107,7 +106,7 @@ const Business = () => {
 							Alcohol
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.Alcohol != "" ? businessData.Alcohol : "No info"}
+							{businessData.Alcohol !== "" ? businessData.Alcohol : "No info"}
 						</p>
 					</div>
 					<div>
@@ -115,9 +114,7 @@ const Business = () => {
 							Bike Parking
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.BikeParking != ""
-								? businessData.BikeParking
-								: "No info"}
+							{businessData.BikeParking !== "" ? businessData.BikeParking : "No info"}
 						</p>
 					</div>
 					<div>
@@ -125,9 +122,7 @@ const Business = () => {
 							Noise Level
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.NoiseLevel != ""
-								? businessData.NoiseLevel
-								: "No info"}
+							{businessData.NoiseLevel !== "" ? businessData.NoiseLevel : "No info"}
 						</p>
 					</div>
 					<div>
@@ -135,9 +130,7 @@ const Business = () => {
 							Restaurant's Attire
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.RestaurantsAttire != ""
-								? businessData.RestaurantsAttire
-								: "No info"}
+							{businessData.RestaurantsAttire !== "" ? businessData.RestaurantsAttire : "No info"}
 						</p>
 					</div>
 					<div>
@@ -145,9 +138,7 @@ const Business = () => {
 							Restaurant's Price Range
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.RestaurantsPriceRange != ""
-								? businessData.RestaurantsPriceRange
-								: "No info"}
+							{businessData.RestaurantsPriceRange !== "" ? businessData.RestaurantsPriceRange : "No info"}
 						</p>
 					</div>
 					<div>
@@ -155,7 +146,7 @@ const Business = () => {
 							Smoking
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.Smoking != "" ? businessData.Smoking : "No info"}
+							{businessData.Smoking !== "" ? businessData.Smoking : "No info"}
 						</p>
 					</div>
 					<div>
@@ -163,7 +154,7 @@ const Business = () => {
 							WiFi
 						</p>
 						<p className="text-normal text-base leading-6 text-gray-600 mt-4">
-							{businessData.WiFi != "" ? businessData.WiFi : "No info"}
+							{businessData.WiFi !== "" ? businessData.WiFi : "No info"}
 						</p>
 					</div>
 				</div>

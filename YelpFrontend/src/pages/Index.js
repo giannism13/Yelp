@@ -73,6 +73,8 @@ const Index = () => {
 
 	const [showFilters, setShowfilters] = useState(false);
 
+	const [showMap, setShowMap] = useState(false);
+
 	return (
 		<Layout>
 			<div className="flex justify-center items-center w-full gap-4 lg:flex-row md:flex-col bg-indigo-300 shadow-md fixed z-50">
@@ -101,10 +103,10 @@ const Index = () => {
 					<Search onSearchAction={onSearchAction} />
 				</div>
 				<div className="flex w-1/6 justify-end">
-					<a href="http://localhost:3000/mapview"
-						className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm ">
-						Map view
-					</a>
+					<button onClick={() => setShowMap(!showMap)}
+						className="mx-2 my-2 bg-gray-300 transition duration-150 ease-in-out hover:bg-gray-400 rounded text-indigo-700 px-8 py-3 text-sm">
+						Show/Hide Map
+					</button>
 				</div>
 				<div className="flex w-1/6 justify-end">
 					<button onClick={onClick}
@@ -119,41 +121,38 @@ const Index = () => {
 					<Filtering showFilters={showFilters} />
 				</div>
 
+
 				<div className={`flex flex-col place-content-center overflow-hidden ${showFilters ? "w-3/4" : "w-full"}`}>
-					{" "}
-					<div className="flex justify-center h-96">
-						<div className="flex justify-center cursor-pointer m-5 rounded-lg bg-white shadow-xl overflow-hidden w-full max-w-6xl">
-							<div className="flex flex-col lg:flex-row w-full items-start lg:items-center rounded">
-								<Map data={pageData} zoom={4}></Map>
-							</div>
-						</div>
-					</div>
 					{pageData.map((listingItem, idx) => (
-						<ListingItem
-							key={`listing-item-${listingItem.name}-${idx}`}
-							listingItem={listingItem}
-						/>
+						<ListingItem key={`listing-item-${listingItem.name}-${idx}`} listingItem={listingItem} />
 					))}
 					{pageCount > 1 && (
 						<div className="flex justify-center items-center w-full place-content-center overflow-hidden">
 							<button
 								onClick={() => goToPage(page - 1)}
 								className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
-			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm"
-								s>
+			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm">
 								Previous
 							</button>
 							{page}/{pageCount}
 							<button
 								onClick={() => goToPage(page + 1)}
 								className="mx-2 my-2 bg-white transition duration-150 ease-in-out hover:border-indigo-600
-			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm"
-							>
+			 hover:text-indigo-600 rounded border border-indigo-700 text-indigo-700 px-8 py-3 text-sm">
 								Next
 							</button>
 						</div>
 					)}
 				</div>
+				{(pageData.length > 0) && (showMap) ?
+					<div className="flex justify-center h-1/2 w-1/4">
+						<div className="flex justify-center cursor-pointer m-5 rounded-lg bg-white shadow-xl overflow-hidden w-full max-w-6xl">
+							<div className="flex flex-col lg:flex-row w-full items-start lg:items-center rounded">
+								<Map data={pageData} zoom={3} />
+							</div>
+						</div>
+					</div>
+					: null}
 			</div>
 		</Layout>
 	);

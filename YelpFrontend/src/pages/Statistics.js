@@ -6,6 +6,8 @@ import { API_URL } from "../constants/constants";
 import Barchart from "../components/Barchart";
 import Piechart from "../components/Piechart";
 //import HeatMap from "../components/HeatMap";
+import Stats from "../components/Stats";
+import AverageScores from "../components/AverageScores";
 
 
 const Statistics = () => {
@@ -17,17 +19,27 @@ const Statistics = () => {
 
 	const [barVisibility, setBarVisibility] = useState(true);
 	const [pieVisibility, setPieVisibility] = useState(false);
-
+	const [avgVisibity, setAvgVisibility] = useState(false);
+	const [Top5Visibility, setTop5Visibility] = useState(false);
 
 	const onPieClick = () => {
 		setBarVisibility(false);
 		setPieVisibility(true);
 		//setHeatVisibility(false);
+		setAvgVisibility(false);
 	}
 
 	const onBarClick = () => {
 		setBarVisibility(true);
 		setPieVisibility(false);
+		setAvgVisibility(false);
+		//setHeatVisibility(false);
+	}
+
+	const onAvgClick = () => {
+		setBarVisibility(false);
+		setPieVisibility(false);
+		setAvgVisibility(true);
 		//setHeatVisibility(false);
 	}
 
@@ -109,9 +121,10 @@ const Statistics = () => {
 								<span className="text-sm  ml-2">Heatmaps</span>
 							</div>
 						</li> */}
-						<li className="flex w-full justify-between text-gray-400 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center px-8 py-3">
+						<li className="flex w-full justify-between text-gray-400 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center px-8 py-3"
+						onClick={onAvgClick}>
 							<div className="flex items-center">
-								<span className="text-sm  ml-2">Top 5 Lists</span>
+								<span className="text-sm  ml-2">Average Scores</span>
 							</div>
 						</li>
 					</ul>
@@ -137,6 +150,12 @@ const Statistics = () => {
 				{pieVisibility ?
 					<div className="w-1/2 h-1/2 rounded flex-none m-auto">
 						<Piechart attribute={attribute} chartData={chartData} state={state} city={city} />
+					</div>
+					: null}
+
+				{avgVisibity ? 
+					<div className="w-1/2 h-1/2 rounded flex-none m-auto">
+						<AverageScores/>
 					</div>
 					: null}
 

@@ -99,9 +99,16 @@ app.get("/get_all_states", (req, res) => {
 //returns all cities for the selected state
 app.get("/get_all_cities/:state", (req, res) => {
 	var state = req.params.state;
-	const object = knex("businesses2").distinct("city").whereILike("state", state).orderBy("city", "asc").then((response) => {
-		res.send(response.map((result) => result.city));
-	});
+	if (state !== "None") {
+		const object = knex("businesses2").distinct("city").whereILike("state", state).orderBy("city", "asc").then((response) => {
+			res.send(response.map((result) => result.city));
+		});
+	}
+	else {
+		const object = knex("businesses2").distinct("city").orderBy("city", "asc").then((response) => {
+			res.send(response.map((result) => result.city));
+		});
+	}
 });
 
 //returns the number business for the selected city and state
@@ -207,22 +214,9 @@ app.get("/searchExt/", (req, res) => {
 
 app.get("/avgScore/", (req, res) => {
 	var state = req.query.state;
-	var city = req.query.city;
-
-	if (state === "None") {
-		const object = knex("businesses2").select("stars").then((response) => {
-			res.send(response.map((result) => result.stars));
-		});
-	}
-	else if (city === "None") {
-		const object = knex("businesses2").select("stars").where("state", state).then((response) => {
-			res.send(response.map((result) => result.stars));
-		});
-	}
-	else {
-		const object = knex("businesses2").select("stars").where("state", state).andWhere("city", city)
-			.then((response) => {
-				res.send(response.map((result) => result.stars));
-			});
-	}
+	const object = knex("businesses2").select("stars", "city").where("state", state).then((response) => {
+		res.send(response);
+	});
 });
+
+app.get("/")

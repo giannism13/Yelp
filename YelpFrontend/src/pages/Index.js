@@ -17,9 +17,17 @@ const Index = () => {
 
 	const filteredListingItems = useMemo(() => {
 		return listingItems.filter((item) => {
-			if (filterValues)
-				for (const property of Object.keys(filterValues))
-					return filterValues[property][item[property]] === true;
+			if (filterValues) {
+				const valueSets = Object.entries(filterValues);
+				return valueSets.every(([category, valueSet]) => {
+					for (const property of Object.keys(valueSet)) {
+						if (item[category] === '' || valueSet[item[category]]) {
+							return true;
+						}
+					}
+					return false
+				})
+			}
 
 			return true;
 		})
@@ -122,7 +130,7 @@ const Index = () => {
 				</div>
 
 
-				<div className={`flex flex-col place-content-center overflow-hidden ${showFilters ? "w-3/4" : "w-full"}`}>
+				<div className={`flex flex-col place-content-center overflow-hidden ${showFilters && showMap ? "w-2/4" : showFilters || showMap ? "w-3/4" : "w-full"}`}>
 					{pageData.map((listingItem, idx) => (
 						<ListingItem key={`listing-item-${listingItem.name}-${idx}`} listingItem={listingItem} />
 					))}
@@ -145,9 +153,9 @@ const Index = () => {
 					)}
 				</div>
 				{(pageData.length > 0) && (showMap) ?
-					<div className="flex justify-center h-1/2 w-1/4">
-						<div className="flex justify-center cursor-pointer m-5 rounded-lg bg-white shadow-xl overflow-hidden w-full max-w-6xl">
-							<div className="flex flex-col lg:flex-row w-full items-start lg:items-center rounded">
+					<div className="sticky h-full self-start top-24 w-1/4 p-3">
+						<div className="flex justify-center cursor-pointer rounded-lg bg-white shadow-xl overflow-hidden w-full">
+							<div className="flex flex-col lg:flex-row w-full items-start lg:items-center rounded ">
 								<Map data={pageData} zoom={3} />
 							</div>
 						</div>

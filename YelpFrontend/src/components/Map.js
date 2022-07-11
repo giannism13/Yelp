@@ -7,8 +7,8 @@ import {
 } from "@react-google-maps/api";
 
 const containerStyle = {
-	width: "100vw",
-	height: "100vh",
+	width: "100%",
+	height: "calc(100vh - 115px)",
 };
 const centerUSA = {
 	lat: 39.5,

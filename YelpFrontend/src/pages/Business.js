@@ -61,27 +61,13 @@ const Business = () => {
 						<hr className=" bg-gray-200 w-full my-2" />
 						<div className=" flex flex-row justify-between items-center mt-2">
 							<ul className="font-medium text-base leading-4 text-gray-600">
-								<li>
-									<b>Monday: </b>{businessData.Monday ? businessData.Monday + " " : "Closed"}
-								</li>
-								<li>
-									<b>Tuesday: </b>{businessData.Tuesday ? businessData.Tuesday + " " : "Closed"}
-								</li>
-								<li>
-									<b>Wednesday: </b>{businessData.Wednesday ? businessData.Wednesday + " " : "Closed"}
-								</li>
-								<li>
-									<b>Thursday: </b>{businessData.Thursday ? businessData.Thursday + " " : "Closed"}
-								</li>
-								<li>
-									<b>Friday: </b>{businessData.Friday ? businessData.Friday + " " : "Closed"}
-								</li>
-								<li>
-									<b>Saturday: </b>{businessData.Saturday ? businessData.Saturday + " " : "Closed"}
-								</li>
-								<li>
-									<b>Sunday: </b>{businessData.Sunday ? businessData.Sunday + " " : "Closed"}
-								</li>
+								<li><b>Monday: </b>{businessData.Monday ? businessData.Monday + " " : "Closed"}</li>
+								<li><b>Tuesday: </b>{businessData.Tuesday ? businessData.Tuesday + " " : "Closed"}</li>
+								<li><b>Wednesday: </b>{businessData.Wednesday ? businessData.Wednesday + " " : "Closed"}</li>
+								<li><b>Thursday: </b>{businessData.Thursday ? businessData.Thursday + " " : "Closed"}</li>
+								<li><b>Friday: </b>{businessData.Friday ? businessData.Friday + " " : "Closed"}</li>
+								<li><b>Saturday: </b>{businessData.Saturday ? businessData.Saturday + " " : "Closed"}</li>
+								<li><b>Sunday: </b>{businessData.Sunday ? businessData.Sunday + " " : "Closed"}</li>
 							</ul>
 						</div>
 						<hr className=" bg-gray-200 w-full mt-4" />

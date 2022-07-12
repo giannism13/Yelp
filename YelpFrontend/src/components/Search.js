@@ -4,18 +4,22 @@ import { useSearchParams } from 'react-router-dom';
 const SEARCH_QUERY_PARAM = 'search'
 
 const Search = (props) => {
-	const { onSearchAction } = props;
+	const { onSearchAction, state, city } = props;
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const [searchContent, setSearchContent] = useState(searchParams.get(SEARCH_QUERY_PARAM) ?? "");
 	const onFormSubmit = useCallback(() => {
-		setSearchParams({ [SEARCH_QUERY_PARAM]: searchContent })
+		setSearchParams({ [SEARCH_QUERY_PARAM]: searchContent, state: searchParams.get('state'), city: searchParams.get('city'), attribute: searchParams.get('attribute'), attributeValue: searchParams.get('attributeValue'), });
 		onSearchAction(searchContent);
 	}, [searchContent, onSearchAction, setSearchParams]);
 
 	useEffect(() => {
 		onFormSubmit();
 	}, [])
+
+	useEffect(() => {
+		onFormSubmit();
+	}, [state, city])
 
 	return (
 		<form className="sticky top-0 left-0 right-0" onSubmit={(e) => { e.preventDefault(); onFormSubmit(); }}>

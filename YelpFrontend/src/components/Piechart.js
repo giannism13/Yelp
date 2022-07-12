@@ -14,8 +14,8 @@ const Piechart = (props) => {
 		var valueIndexClicked = getElementAtEvent(chartRef.current, event)[0].index;
 
 		var valueClicked = labels[valueIndexClicked];
-		console.log(props)
-		navigate({ pathname: '/', search: createSearchParams({ state, city, attribute, attributeValue: valueClicked }).toString() });
+		window.open(`/index?state=${state}&city=${city}&attribute=${attribute}&attributeValue=${valueClicked}`, '_self');
+		//navigate({ pathname: '/index', search: createSearchParams({ state, city, attribute, attributeValue: valueClicked }).toString() });
 
 	}
 

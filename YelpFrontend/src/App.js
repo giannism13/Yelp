@@ -14,7 +14,7 @@ function App() {
 			<FilterContextProvider>
 				<Routes>
 					<Route path="/" element={<Home />} />
-					<Route path="index" element={<Index/>}/>
+					<Route path="index" element={<Index />} />
 					<Route path="business" element={<Business />} />
 					<Route path="statistics" element={<Statistics />} />
 					<Route path="mapview" element={<Map />} />

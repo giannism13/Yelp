@@ -7,11 +7,11 @@ const knex = require("knex")({
 		// password: "48WWNPbM3p",
 		// port: "3306"
 		host: "localhost",
-		database: "adv",
+		database: "yelp",
 		user: "root",
-		password: "esra21200",
+		password: "13334921",
 		port: "3306"
 	}
 });
 
-module.exports = knex;1
+module.exports = knex; 1

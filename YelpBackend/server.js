@@ -39,11 +39,12 @@ app.get("/categories", (req, res) => {
 //endpoint for a future search function
 //seach query must be passed as query parameter eg. /search/?q=rental
 app.get("/search", (req, res) => {
+	console.log("normal search");
 	var searchQ = req.query.q;
 	var state = req.query.state;
 	var city = req.query.city;
 
-	if (state == "None" || state == null) {
+	if (state == "None" || state == null || state == "null") {
 		const object = knex("businesses2")
 			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
 				"BikeParking",
@@ -56,7 +57,7 @@ app.get("/search", (req, res) => {
 				res.send(response);
 			});
 	}
-	else if (city == "None" || city == null) {
+	else if (city == "None" || city == "null") {
 		const object = knex("businesses2")
 			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
 				"BikeParking",
@@ -70,7 +71,7 @@ app.get("/search", (req, res) => {
 				res.send(response);
 			});
 	}
-	else {
+	else if (city == "None" || city == null && city != "null") {
 		const object = knex("businesses2")
 			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
 				"BikeParking",
@@ -211,48 +212,51 @@ app.get("/get-all-values/:attribute", (req, res) => {
 
 //makes a search query with the set city, state, attribute and attribute value
 app.get("/searchExt/", (req, res) => {
+	console.log("extended search");
 	var state = req.query.state;
 	var city = req.query.city;
 	var attribute = req.query.attribute;
 	var attributeValue = req.query.attributeValue;
 
-	if (state === "None") {
-		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
-			"BikeParking",
-			"NoiseLevel",
-			"RestaurantsAttire",
-			"RestaurantsPriceRange",
-			"Smoking",
-			"WiFi")
-			.where(attribute, attributeValue).then((response) => {
-				res.send(response);
-			});
-	}
-	else if (city === "None") {
-		const object = knex("businesses2")
-			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+	if (attribute !== "null") {
+		if (state === "None" || state === "null") {
+			const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
 				"BikeParking",
 				"NoiseLevel",
 				"RestaurantsAttire",
 				"RestaurantsPriceRange",
 				"Smoking",
 				"WiFi")
-			.where(attribute, attributeValue).andWhereILike("state", state).then((response) => {
-				res.send(response);
-			});
-	}
-	else {
-		const object = knex("businesses2")
-			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
-				"BikeParking",
-				"NoiseLevel",
-				"RestaurantsAttire",
-				"RestaurantsPriceRange",
-				"Smoking",
-				"WiFi")
-			.where(attribute, attributeValue).andWhereILike("state", state).andWhereILike("city", city).then((response) => {
-				res.send(response);
-			});
+				.where(attribute, attributeValue).then((response) => {
+					res.send(response);
+				});
+		}
+		else if (city === "None" || city === "null") {
+			const object = knex("businesses2")
+				.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+					"BikeParking",
+					"NoiseLevel",
+					"RestaurantsAttire",
+					"RestaurantsPriceRange",
+					"Smoking",
+					"WiFi")
+				.where(attribute, attributeValue).andWhereILike("state", state).then((response) => {
+					res.send(response);
+				});
+		}
+		else {
+			const object = knex("businesses2")
+				.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+					"BikeParking",
+					"NoiseLevel",
+					"RestaurantsAttire",
+					"RestaurantsPriceRange",
+					"Smoking",
+					"WiFi")
+				.where(attribute, attributeValue).andWhereILike("state", state).andWhereILike("city", city).then((response) => {
+					res.send(response);
+				});
+		}
 	}
 });
 

@@ -11,7 +11,6 @@ app.use(cors());
 
 app.get("/businesses", async (req, res) => {
 	const { businessName, city, max = 1000, state, isOpen } = req.query;
-	console.log({ businessName, city, state, max, isOpen });
 
 	const maximum = Number.parseInt(max) || 100;
 	res.json(
@@ -40,19 +39,52 @@ app.get("/categories", (req, res) => {
 //endpoint for a future search function
 //seach query must be passed as query parameter eg. /search/?q=rental
 app.get("/search", (req, res) => {
-	console.log(req.query);
+	console.log("normal search");
 	var searchQ = req.query.q;
-	const object = knex("businesses2")
-		.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
-			"BikeParking",
-			"NoiseLevel",
-			"RestaurantsAttire",
-			"RestaurantsPriceRange",
-			"Smoking",
-			"WiFi").whereILike("name", `%${searchQ}%`)
-		.then((response) => {
-			res.send(response);
-		});
+	var state = req.query.state;
+	var city = req.query.city;
+
+	if (state == "None" || state == null || state == "null") {
+		const object = knex("businesses2")
+			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+				"BikeParking",
+				"NoiseLevel",
+				"RestaurantsAttire",
+				"RestaurantsPriceRange",
+				"Smoking",
+				"WiFi").whereILike("name", `%${searchQ}%`)
+			.then((response) => {
+				res.send(response);
+			});
+	}
+	else if (city == "None" || city == "null") {
+		const object = knex("businesses2")
+			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+				"BikeParking",
+				"NoiseLevel",
+				"RestaurantsAttire",
+				"RestaurantsPriceRange",
+				"Smoking",
+				"WiFi", "state")
+			.whereILike("name", `%${searchQ}%`).where("state", state)
+			.then((response) => {
+				res.send(response);
+			});
+	}
+	else if (city == "None" || city == null && city != "null") {
+		const object = knex("businesses2")
+			.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+				"BikeParking",
+				"NoiseLevel",
+				"RestaurantsAttire",
+				"RestaurantsPriceRange",
+				"Smoking",
+				"WiFi", "state", "city")
+			.whereILike("name", `%${searchQ}%`).where("state", state).where("city", city)
+			.then((response) => {
+				res.send(response);
+			});
+	}
 });
 
 //endpoint for when you click on a business
@@ -99,9 +131,11 @@ app.get("/get_all_states", (req, res) => {
 //returns all cities for the selected state
 app.get("/get_all_cities/:state", (req, res) => {
 	var state = req.params.state;
-	const object = knex("businesses2").distinct("city").whereILike("state", state).orderBy("city", "asc").then((response) => {
-		res.send(response.map((result) => result.city));
-	});
+	if (state !== "None") {
+		const object = knex("businesses2").distinct("city").whereILike("state", state).orderBy("city", "asc").then((response) => {
+			res.send(response.map((result) => result.city));
+		});
+	}
 });
 
 //returns the number business for the selected city and state
@@ -178,51 +212,83 @@ app.get("/get-all-values/:attribute", (req, res) => {
 
 //makes a search query with the set city, state, attribute and attribute value
 app.get("/searchExt/", (req, res) => {
+	console.log("extended search");
 	var state = req.query.state;
 	var city = req.query.city;
 	var attribute = req.query.attribute;
 	var attributeValue = req.query.attributeValue;
 
-	if (state === "None") {
-		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count")
-			.where(attribute, attributeValue).then((response) => {
-				res.send(response);
-			});
-	}
-	else if (city === "None") {
-		const object = knex("businesses2")
-			.select("name", "business_id", "stars", "longitude", "latitude", "review_count")
-			.where(attribute, attributeValue).andWhereILike("state", state).then((response) => {
-				res.send(response);
-			});
-	}
-	else {
-		const object = knex("businesses2")
-			.select("name", "business_id", "stars", "longitude", "latitude", "review_count")
-			.where(attribute, attributeValue).andWhereILike("state", state).andWhereILike("city", city).then((response) => {
-				res.send(response);
-			});
+	if (attribute !== "null") {
+		if (state === "None" || state === "null") {
+			const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+				"BikeParking",
+				"NoiseLevel",
+				"RestaurantsAttire",
+				"RestaurantsPriceRange",
+				"Smoking",
+				"WiFi")
+				.where(attribute, attributeValue).then((response) => {
+					res.send(response);
+				});
+		}
+		else if (city === "None" || city === "null") {
+			const object = knex("businesses2")
+				.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+					"BikeParking",
+					"NoiseLevel",
+					"RestaurantsAttire",
+					"RestaurantsPriceRange",
+					"Smoking",
+					"WiFi")
+				.where(attribute, attributeValue).andWhereILike("state", state).then((response) => {
+					res.send(response);
+				});
+		}
+		else {
+			const object = knex("businesses2")
+				.select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories", "Alcohol",
+					"BikeParking",
+					"NoiseLevel",
+					"RestaurantsAttire",
+					"RestaurantsPriceRange",
+					"Smoking",
+					"WiFi")
+				.where(attribute, attributeValue).andWhereILike("state", state).andWhereILike("city", city).then((response) => {
+					res.send(response);
+				});
+		}
 	}
 });
 
 app.get("/avgScore/", (req, res) => {
 	var state = req.query.state;
-	var city = req.query.city;
+	const object = knex("businesses2").select("stars", "city").where("state", state).then((response) => {
+		res.send(response);
+	});
+});
 
-	if (state === "None") {
-		const object = knex("businesses2").select("stars").then((response) => {
-			res.send(response.map((result) => result.stars));
-		});
-	}
-	else if (city === "None") {
-		const object = knex("businesses2").select("stars").where("state", state).then((response) => {
-			res.send(response.map((result) => result.stars));
-		});
-	}
-	else {
-		const object = knex("businesses2").select("stars").where("state", state).andWhere("city", city)
-			.then((response) => {
-				res.send(response.map((result) => result.stars));
+app.get("/get_top_5/:state/:city", (req, res) => {
+	let state = req.params.state;
+	let city = req.params.city;
+
+	if (state == "None") {
+		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories")
+			.limit(5).orderBy([{ column: 'stars', order: 'desc' }, { column: 'review_count', order: 'desc' }]).then((response) => {
+				res.send(response);
 			});
 	}
-});
+	else if (city == "None") {
+		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories")
+			.where("state", state).limit(5).orderBy([{ column: 'stars', order: 'desc' }, { column: 'review_count', order: 'desc' }]).then((response) => {
+				res.send(response);
+			});
+	}
+	else {
+		const object = knex("businesses2").select("name", "business_id", "stars", "longitude", "latitude", "review_count", "categories")
+			.where("state", state).where("city", city).limit(5).orderBy([{ column: 'stars', order: 'desc' }, { column: 'review_count', order: 'desc' }]).then((response) => {
+				res.send(response);
+			});
+	}
+})
+
+app.get("/")

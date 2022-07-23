@@ -8,15 +8,22 @@ import { useNavigate } from "react-router-dom";
 import { API_URL } from "../constants/constants";
 import Filtering from "../components/Filtering.js";
 import { useFilterContext } from "../hooks/use-filters";
+import { usePrevious } from "../hooks/use-previous";
 import Map from "../components/Map.js";
+import LocationSelect from "../components/LocationSelect.js";
+import { useSearchParams } from 'react-router-dom';
 
 const Index = () => {
+	const [searchParams, setSearchParams] = useSearchParams();
 	const [listingItems, setListingItems] = useState([]);
+	const [state, setState] = useState(searchParams.get("state") ?? "None");
+	const [city, setCity] = useState(searchParams.get("city") ?? "None");
+	const prevState = usePrevious(state);
 
 	const { filterValues } = useFilterContext();
 
 	const filteredListingItems = useMemo(() => {
-		return listingItems.filter((item) => {
+		const filteredListingItems = listingItems.filter((item) => {
 			if (filterValues) {
 				const valueSets = Object.entries(filterValues);
 				return valueSets.every(([category, valueSet]) => {
@@ -31,7 +38,10 @@ const Index = () => {
 
 			return true;
 		})
+		return filteredListingItems;
 	}, [listingItems, filterValues])
+
+
 
 	const {
 		page,
@@ -45,7 +55,7 @@ const Index = () => {
 	const onSearchAction = useCallback(
 		(searchQuery) => {
 			if (searchQuery.length >= 3) {
-				fetch(`http://localhost:3001/search?q=${searchQuery}`)
+				fetch(`http://localhost:3001/search?q=${searchQuery}&state=${state}&city=${city}`)
 					.then((response) => response.json())
 					.then((data) => {
 						goToPage(1);
@@ -53,8 +63,9 @@ const Index = () => {
 					});
 			}
 		},
-		[goToPage]
+		[goToPage, city, state]
 	);
+
 
 	const navigate = useNavigate();
 	const onClick = useCallback(() => {
@@ -74,10 +85,17 @@ const Index = () => {
 			)
 				.then((response) => response.json())
 				.then((data) => {
+					console.log(data);
 					setListingItems(data);
 				});
 		}
 	}, []);
+
+	useEffect(() => {
+		console.log({ prev: prevState, current: state });
+		if (prevState)
+			setCity("None");
+	}, [state]);
 
 	const [showFilters, setShowfilters] = useState(false);
 
@@ -107,8 +125,11 @@ const Index = () => {
 						Filters
 					</button>
 				</div>
+				<div>
+					<LocationSelect state={state} onStateChange={setState} city={city} onCityChange={setCity} />
+				</div>
 				<div className="flex-auto w-2/3">
-					<Search onSearchAction={onSearchAction} />
+					<Search onSearchAction={onSearchAction} state={state} city={city} />
 				</div>
 				<div className="flex w-1/6 justify-end">
 					<button onClick={() => setShowMap(!showMap)}

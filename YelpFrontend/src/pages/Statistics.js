@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import LocationSelect from "../components/LocationSelect";
 import AttributeSelect from "../components/AttributeSelect";
-//import AttributeValueSelect from "../components/AttributeValueSelect";
 import { API_URL } from "../constants/constants";
 import Barchart from "../components/Barchart";
 import Piechart from "../components/Piechart";
-//import HeatMap from "../components/HeatMap";
+import Top5List from "../components/Top5List";
 
 
 const Statistics = () => {
-
 	const [state, setState] = useState("None");
 	const [city, setCity] = useState("None");
 	const [attribute, setAttribute] = useState("Alcohol");
@@ -17,37 +15,25 @@ const Statistics = () => {
 
 	const [barVisibility, setBarVisibility] = useState(true);
 	const [pieVisibility, setPieVisibility] = useState(false);
-
+	const [top5Visibility, setTop5Visibility] = useState(false);
 
 	const onPieClick = () => {
 		setBarVisibility(false);
 		setPieVisibility(true);
-		//setHeatVisibility(false);
+		setTop5Visibility(false);
 	}
 
 	const onBarClick = () => {
 		setBarVisibility(true);
 		setPieVisibility(false);
-		//setHeatVisibility(false);
+		setTop5Visibility(false);
 	}
 
-	//const [attributeValue, setAttributeValue] = useState(null);
-	//const [heatCoordinates, setHeatCoordinates] = useState([]);
-	//const [heatVisibility, setHeatVisibility] = useState(false);
-
-	// const onHeatClick = () => {
-	// 	setBarVisibility(false);
-	// 	setPieVisibility(false);
-	// 	setHeatVisibility(true);
-
-	// 	fetch(`${API_URL}/heatmap/${attribute}/${attributeValue}`)
-	// 		.then(response => response.json())
-	// 		.then(
-	// 			data => {
-	// 				setHeatCoordinates(data);
-	// 			}
-	// 		);
-	// }
+	const onTop5Click = () => {
+		setBarVisibility(false);
+		setPieVisibility(false);
+		setTop5Visibility(true);
+	}
 
 	useEffect(() => {
 		if (attribute !== []) {
@@ -103,15 +89,10 @@ const Statistics = () => {
 								<span className="text-sm  ml-2">Piecharts</span>
 							</div>
 						</li>
-						{/* <li className="flex w-full justify-between text-gray-400 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center px-8 py-3"
-							onClick={onHeatClick}>
+						<li className="flex w-full justify-between text-gray-400 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center px-8 py-3"
+							onClick={onTop5Click}>
 							<div className="flex items-center">
-								<span className="text-sm  ml-2">Heatmaps</span>
-							</div>
-						</li> */}
-						<li className="flex w-full justify-between text-gray-400 hover:text-gray-300 hover:bg-indigo-800 cursor-pointer items-center px-8 py-3">
-							<div className="flex items-center">
-								<span className="text-sm  ml-2">Top 5 Lists</span>
+								<span className="text-sm  ml-2">Top 5 lists</span>
 							</div>
 						</li>
 					</ul>
@@ -120,12 +101,11 @@ const Statistics = () => {
 
 			{/* Sidebar ends */}
 			{/* Remove class [ h-64 ] when adding a card block */}
-			<div className="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6">
+			<div className="container mx-auto py-10 md:w-4/5 w-11/12 px-6 h-full">
 				<div className="flex-wrap rounded">
-					<AttributeSelect attribute={attribute} onAttributeChange={setAttribute} />
-					{/* {heatVisibility ?
-						<AttributeValueSelect attribute={attribute} attributeValue={attributeValue} onAttributeValueChange={setAttributeValue} />
-						: <LocationSelect state={state} onStateChange={setState} city={city} onCityChange={setCity} />} */}
+					{top5Visibility ? null :
+						<AttributeSelect attribute={attribute} onAttributeChange={setAttribute} />
+					}
 					<LocationSelect state={state} onStateChange={setState} city={city} onCityChange={setCity} />
 				</div>
 				{barVisibility ?
@@ -140,11 +120,11 @@ const Statistics = () => {
 					</div>
 					: null}
 
-				{/* {heatVisibility ?
-					<div className="w-full h-full rounded flex-none">
-						<HeatMap cooedinates={heatCoordinates} />
+				{top5Visibility ?
+					<div className="w-full h-full rounded m-auto overflow-y-auto">
+						<Top5List state={state} city={city} />
 					</div>
-					: null} */}
+					: null}
 			</div>
 		</div>
 	);

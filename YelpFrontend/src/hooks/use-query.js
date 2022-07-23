@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { useMemo } from 'react';
 
 export const useQuery = () => {
